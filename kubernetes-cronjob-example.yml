@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: nextcloud-backup
+  name: nextcloud-dav-backup
 spec:
   schedule: "0 3 * * *" # every night at 3 AM
   jobTemplate:
@@ -9,8 +9,8 @@ spec:
       template:
         spec:
           containers:
-          - name: nextcloud-backup
-            image: lu1as/nextcloud-backup
+          - name: nextcloud-dav-backup
+            image: lu1as/nextcloud-dav-backup
             env:
             - name: NEXTCLOUD_URL
               value: "https://yourserver.de"
