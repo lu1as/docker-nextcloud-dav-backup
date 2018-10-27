@@ -1,0 +1,31 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: nextcloud-backup
+spec:
+  schedule: "0 3 * * *" # every night at 3 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: nextcloud-backup
+            image: lu1as/nextcloud-backup
+            env:
+            - name: NEXTCLOUD_URL
+              value: "https://yourserver.de"
+            - name: NEXTCLOUD_USER
+              value: "user"
+            - name: NEXTCLOUD_PASSWORD
+              value: "secret"
+            - name: CALENDERS
+              value: "first,second"
+            volumeMounts:
+            - name: backup
+              mountPath: /backup
+          volumes:
+          - name: backup
+            nfs:
+              server: nfsserver
+              path: /kubernetes/nextcloud/backup
+          restartPolicy: OnFailure
